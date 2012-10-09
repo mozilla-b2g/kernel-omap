@@ -303,6 +303,10 @@ extern void omap2_init_common_infrastructure(void);
 extern void omap2_init_common_devices(struct omap_sdrc_params *sdrc_cs0,
 				      struct omap_sdrc_params *sdrc_cs1);
 
+extern int omap_register_mac_device_fixup_paths(const char * const *paths,
+								    int count);
+
+
 #define __arch_ioremap	omap_ioremap
 #define __arch_iounmap	omap_iounmap
 
