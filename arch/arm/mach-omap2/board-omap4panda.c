@@ -848,6 +848,16 @@ static struct platform_device ramconsole_device = {
 
 extern void __init omap4_panda_android_init(void);
 
+/*
+ * These device paths represent the onboard USB <-> Ethernet bridge, and
+ * the WLAN module on Panda, both of which need their random or all-zeros
+ * mac address replacing with a per-cpu stable generated one
+ */
+static const char * const panda_fixup_mac_device_paths[] = {
+       "usb1/1-1/1-1.1/1-1.1:1.0",
+       "mmc1:0001:2",
+};
+
 static void __init omap4_panda_init(void)
 {
 	int package = OMAP_PACKAGE_CBS;
@@ -858,6 +868,9 @@ static void __init omap4_panda_init(void)
 	if (omap_rev() == OMAP4430_REV_ES1_0)
 		package = OMAP_PACKAGE_CBL;
 	omap4_mux_init(board_mux, NULL, package);
+
+	omap_register_mac_device_fixup_paths(panda_fixup_mac_device_paths,
+                                    ARRAY_SIZE(panda_fixup_mac_device_paths));
 
 	if (wl12xx_set_platform_data(&omap_panda_wlan_data))
 		pr_err("error setting wl12xx data\n");
